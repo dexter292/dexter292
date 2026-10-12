@@ -44,14 +44,24 @@ Also own / oversee product delivery under **[outsourcecentral](https://github.co
 
 ### How I work
 
-- Architecture first — clear service boundaries and portal ↔ sgames contracts
-- Docs & contracts as source of truth before scale-out
-- Ship with measurable gates: tests, UAT, env promote via shared CI/CD
+Guided by the S10 **[TD — Technical Document](https://sgame.atlassian.net/wiki/spaces/S10/folder/2890465464/TD+Technical+Document)** program (Proposal → TDD → Spec → Onboarding → Incident).
+
+- **Docs before code** — write / review Technical Proposal & TDD first; keep TS / API contracts and system overview as the shared source of truth
+- **Architecture ownership** — decide service boundaries (gateway, lobby, accumulation, risk, portal ↔ sgames); prefer explicit fail modes and shared contracts over ad‑hoc coupling
+- **Delivery discipline** — Gitflow (feature → develop → release → main / hotfix); squash PRs with clear titles; release checklist (CI green, SemVer, QA, security scan, rollback plan, smoke on prod)
+- **Multi-brand scale** — branch onboarding templates, FE mono / core module patterns, and Outsource Central product ownership so brands ship on the same platform rails
+- **Operate what we ship** — weekly tech sync, runbooks for critical flows, incident write‑ups that feed back into design; monitoring after go‑live before calling it done
+- **Raise the bar continuously** — competency expectations for the team; evolve delivery (e.g. trunk-based + release train + feature flags) when Gitflow cost outweighs benefit
+
+### Documentation
+
+→ [S10 TD Technical Document](https://sgame.atlassian.net/wiki/spaces/S10/folder/2890465464/TD+Technical+Document)  
+→ [Seatincorp](https://github.com/Seatincorp) · [outsourcecentral](https://github.com/outsourcecentral)
 
 ---
 
 <div align="center">
 
-<sub>Seatincorp · S10 Tech Lead · [outsourcecentral](https://github.com/outsourcecentral)</sub>
+<sub>Seatincorp · S10 Tech Lead</sub>
 
 </div>
