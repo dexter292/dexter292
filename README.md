@@ -101,7 +101,7 @@ Product delivery under **[outsourcecentral](https://github.com/outsourcecentral)
 |---|---|---|
 | **Shared web/native core** | [s10-fe-core](https://github.com/outsourcecentral/s10-fe-core) (git submodule `./core`) | APIs, hooks, headless UI, axios (web/RN split), i18n, feature flags |
 | **App / mobile core** | [s10-app-core](https://github.com/outsourcecentral/s10-app-core) · brand `*-app` (e.g. Flutter) | Native / Expo shells sharing core patterns |
-| **Brand hosts** | `s10-6698`, `s10-6716`, `s10-9199`, `s10-9211`, `s10-9189`, … | Skin + `core.config.ts` overrides; same rails, different brand |
+| **Brand hosts** | Per-brand Next.js apps (private) | Skin + `core.config.ts` overrides; same rails, different brand |
 | **Mini-apps** | [s10-mini-apps](https://github.com/outsourcecentral/s10-mini-apps) | Embeddable chat widgets, static sites |
 
 #### Tech stack (brand web)
