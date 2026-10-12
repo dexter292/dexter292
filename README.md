@@ -4,7 +4,7 @@
 
 **Tech Lead — Team S10 @ [Seatincorp](https://github.com/Seatincorp)**
 
-Architecture · Technology direction · Delivery & platform ops
+Architecture · Technology direction
 
 </div>
 
