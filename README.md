@@ -2,38 +2,32 @@
 
 # Dexter
 
-**Platform · Security · Backend Engineering**
+**Platform & Security Engineer @ [Seatincorp](https://github.com/Seatincorp)**
 
-Building reliable systems at the intersection of application security and scalable platforms.
-
-[![GitHub](https://img.shields.io/badge/GitHub-dexter292-181717?style=flat&logo=github)](https://github.com/dexter292)
+Building reliable platforms, security tooling, and backend systems.
 
 </div>
 
 ---
 
-### Focus areas
+### About
 
-- **Web Application Firewall (WAF)** — rule design, traffic inspection, and security tooling
-- **Platform & backend** — services, APIs, and internal developer platforms
-- **DevOps / delivery** — CI/CD, automation, and operational hygiene
+Engineering work is primarily under **[Seatincorp](https://github.com/Seatincorp)** — platform services, application security (WAF), and delivery automation.
 
-### Public work
+### Focus
 
-| Repository | Summary |
-|---|---|
-| [4tml-waf-hackathon-artifacts](https://github.com/dexter292/4tml-waf-hackathon-artifacts) | Deliverables from the 4TML WAF hackathon |
-| [4tml-waf-backend-artifacts](https://github.com/dexter292/4tml-waf-backend-artifacts) | Backend artifacts for the 4TML WAF project |
-| [bricks_breaker](https://github.com/dexter292/bricks_breaker) | Neon Brick Breaker — iOS arcade game (Expo · RN · Skia) |
+- Platform & backend services
+- Web Application Firewall / AppSec
+- CI/CD and DevOps automation
 
-### Stack
+### Organization
 
-`TypeScript` · `Go` · `Python` · `React Native` · `Docker` · `CI/CD` · `WAF / AppSec`
+→ [github.com/Seatincorp](https://github.com/Seatincorp)
 
 ---
 
 <div align="center">
 
-<sub>Company engineering account · Open to collaboration on security & platform topics</sub>
+<sub>Seatincorp engineering account</sub>
 
 </div>
