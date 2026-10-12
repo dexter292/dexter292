@@ -78,18 +78,18 @@ Platform pillars below (data · risk · loyalty · delivery) are first-class own
 
 | Area | Capabilities |
 |---|---|
-| **Identity & access** | JWT auth, users/roles/permissions/routes (`userms` / `casino_portal`), menu driven by BE |
+| **Identity & access** | JWT auth, users/roles/permissions/routes (`userms`), menu driven by BE |
 | **Growth & promo** | Campaigns, gift codes, packages; brand-routed promotion Mongo (`BC12*` / `BC22*`) |
 | **Loyalty ops** | Missions, VIP, raffles, leaderboards, jackpot config — CRUD in Portal, runtime in loyalty-service |
-| **Data & analytics** | Unified events browse, Financial / User / Game overviews, pre-aggregation & backfill ops |
+| **Data & analytics** | Unified events browse, Financial / User overviews, pre-aggregation & backfill ops |
 | **Risk ops** | Fraud cases, graph (Arango), detection, user journey, data quality — alongside risk-decision-service |
-| **Casino & site** | Games/providers/features, hot games, domain/mobile config, site items, launch templates |
+| **Site & config** | Domain/mobile config, site items, launch templates, app/resource links |
 | **Engagement** | Chat rooms/announcements, notification rules & send, CMS landing pages (LDP publish / ISR) |
 | **Platform** | Audit trail, proxy tools, AI agent quota (AIMS), storage (S3) |
 
-**Data plane (portal-be)** — MySQL ×5 · Mongo ×6 · Redis ×3 · ArangoDB · S3; 120+ controllers documented under Diátaxis hubs (Promotion, Loyalty, Accumulation/stats, Risk, Casino, Chat, Notification, CMS, …).
+**Data plane (portal-be)** — MySQL ×5 · Mongo ×6 · Redis ×3 · ArangoDB · S3; 120+ controllers documented under Diátaxis hubs (Promotion, Loyalty, Accumulation/stats, Risk, Chat, Notification, CMS, …).
 
-**FE surface** — modular SPA (`accumulation`, `loyalty`, `risk`, `promotion`, `cms`, `overview` FO/UO/GO, `chat-management`, `user-management`, …); lazy routes + permission matrix; i18n en/vi; docs verified in CI.
+**FE surface** — modular SPA (`accumulation`, `loyalty`, `risk`, `promotion`, `cms`, `overview` FO/UO, `chat-management`, `user-management`, …); lazy routes + permission matrix; i18n en/vi; docs verified in CI.
 
 Docs: [portal-be/docs](https://github.com/Seatincorp/portal-be/blob/main/docs/README.md) · [portal-fe/docs](https://github.com/Seatincorp/s10-fe/blob/main/portal-fe/docs/README.md) · [portal ↔ sgames](https://github.com/Seatincorp/portal-be/blob/main/docs/explanation/portal-sgames-relationship.md)
 
