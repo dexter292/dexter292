@@ -95,7 +95,40 @@ Docs: [portal-be/docs](https://github.com/Seatincorp/portal-be/blob/main/docs/RE
 
 ### Brand products — Outsource Central
 
-Also own / oversee product delivery under **[outsourcecentral](https://github.com/outsourcecentral)** — multi-brand FE apps & shared cores (`s10-fe-core`, `s10-app-core`, `s10-mini-apps`, brand repos such as `s10-6698`, `s10-6716`, `s10-9199`, …).
+Product delivery under **[outsourcecentral](https://github.com/outsourcecentral)** — multi-brand player sites on a shared **Next.js core**, plus mini-apps and mobile shells.
+
+| Layer | Repos | Role |
+|---|---|---|
+| **Shared web/native core** | [s10-fe-core](https://github.com/outsourcecentral/s10-fe-core) (git submodule `./core`) | APIs, hooks, headless UI, axios (web/RN split), i18n, feature flags |
+| **App / mobile core** | [s10-app-core](https://github.com/outsourcecentral/s10-app-core) · brand `*-app` (e.g. Flutter) | Native / Expo shells sharing core patterns |
+| **Brand hosts** | `s10-6698`, `s10-6716`, `s10-9199`, `s10-9211`, `s10-9189`, … | Skin + `core.config.ts` overrides; same rails, different brand |
+| **Mini-apps** | [s10-mini-apps](https://github.com/outsourcecentral/s10-mini-apps) | Embeddable chat widgets, static sites |
+
+#### Tech stack (brand web)
+
+| Concern | Choice |
+|---|---|
+| Framework | **Next.js 15** App Router · **React 19** · TypeScript |
+| Data | **TanStack Query v5** — `queryOptions` / hooks / **SSR prefetch** + `HydrationBoundary` |
+| SSR cache | **`fetchWithCache`** — server LRU memory cache (TTL, size, retry) before hydrate to client |
+| URL state | **nuqs** — typed query params shared client/server |
+| Client state | **Zustand** for forms / UI; Query for server state |
+| Forms | **react-hook-form** + **Zod** |
+| i18n | **Lingui** — RSC + client providers (`vi` / `en`), extract/compile CLI |
+| UI | Headless core components + brand styling (Radix primitives, Tailwind-class composition) |
+| HTTP | Axios with **SSR URL rewrite** (`apiRewrites` / origin) vs CSR `location.origin` |
+| Config | `withNextBaseConfig()` + build-time `core.config.ts` overrides per brand |
+| Observability | OpenTelemetry web SDK · Elastic APM RUM · FingerprintJS |
+| Edge HTML | Next **instrumentation** HTML minify (prod); gzip at nginx/Cloudflare (`compress: false` in Next) |
+
+#### SSR · ISR · caching model
+
+- **SSR first paint** — RSC layouts/pages prefetch critical queries (features, lobby lists, …) via core `prefetch*`; dehydrate into the client so first paint matches server
+- **Multi-layer cache** — server LRU (`fetchWithCache`) → TanStack Query (client) → CDN/nginx (`Cache-Control` / `stale-while-revalidate`); feature probes aware that HTML may be edge-cached
+- **ISR / on-demand revalidate** — CMS landing pages (LDP): Portal publish → brand Next `POST /api/revalidate` (`revalidateTag` / secret); content updates without full redeploy
+- **Cross-platform core** — one import path; Metro picks `.native.ts`, Next picks `.ts` for web vs Expo/RN
+
+Docs: [s10-fe-core](https://github.com/outsourcecentral/s10-fe-core) · Core TAD (S10 Confluence) · CMS LDP ↔ Next ISR via [portal-be CMS handbook](https://github.com/Seatincorp/portal-be/blob/main/docs/solutions/cms-system-handbook.md)
 
 ### How I work
 
