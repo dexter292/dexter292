@@ -4,7 +4,7 @@
 
 **Tech Lead — Team S10 @ [Seatincorp](https://github.com/Seatincorp)**
 
-Architecture · Technology direction · Multi-brand SGames platform
+Architecture · Technology direction · Delivery & EKS ops (familiar with devops-actions-s10)
 
 </div>
 
@@ -59,11 +59,43 @@ Platform pillars below (data · risk · loyalty · delivery) are first-class own
 
 ### DevOps / CI/CD
 
-**[Seatincorp/devops-actions-s10](https://github.com/Seatincorp/devops-actions-s10)** — shared delivery rails for S10
+**[Seatincorp/devops-actions-s10](https://github.com/Seatincorp/devops-actions-s10)** — S10 delivery & runtime config repo (**owned by the DevOps team**; S10 Tech Lead works hands-on with this stack for release, env, and incident ops).
 
-- Reusable GitHub Actions workflows & Helmfile patterns for multi-env EKS (stg / pre / prod)
-- Standardize build → deploy → promote across kbgroup services, portal, risk, and brand apps
-- Domain / release ops aligned with S10 workflow & release checklist in TD docs
+Central place for reusable pipelines + Helmfile that ship **sgames services, portal, risk-decision, brand FE/CDN, chat/static** across **staging → preprod → prod** on **AWS EKS**.
+
+#### Tech stack I operate with
+
+| Layer | Stack |
+|---|---|
+| CI/CD | GitHub Actions (`workflow_call` reusable workflows) · self-hosted `common-runner` |
+| Build & registry | Docker multi-stage · **AWS ECR** · image tag promote across envs |
+| Auth to cloud | **AWS IAM role assumption** (build role / prod deployment role) · OIDC-style Actions → AWS |
+| Deploy | **Helmfile** sync · shared **omnibus** chart (`oci://…/devops/omnibus`) · Go templates (`values.yaml.gotmpl`) |
+| Cluster | **Amazon EKS** (multi-cluster / region inputs) · kubeconfig update · wait/timeout/history |
+| Static / CDN | Node build → **S3** sync · image processing workflows · brand CDN releases |
+| Security gates | **TruffleHog** (verified secrets) · **SonarQube** · **Gitleaks** on the devops repo |
+| Config as code | Per-app Helm values under `helmfile/environments/{staging,preprod,prod}/` |
+
+#### Reusable workflows (familiar surface)
+
+| Workflow | What it does |
+|---|---|
+| `docker-build.yml` | Build → push ECR → sed image repo/tag into Helm values → **helmfile sync** to EKS (matrix deployments) |
+| `deploy-only.yml` | Helm sync **without** rebuild (config/ingress/CSP-only changes) |
+| `pr_security_scan.yaml` / `security.yml` | PR + periodic secret/code quality gates |
+| `switch-domain.yml` | Dispatch: dual-ingress **add/replace** domain + CDN → PR into helmfile |
+| `process-images.yml` · `sync_static_content*.yaml` | Asset / static-content pipelines to S3 |
+
+#### Operational capability (how I use it day-to-day)
+
+- **Release path** — call reusable workflows from product repos; promote stg → pre → prod; verify pod health after helm wait
+- **Brand / CDN onboarding** — follow `SETUP_NEW_BRAND` patterns (FE + CDN values per env); keep domain conventions conflict-free
+- **Domain cutovers** — switch-domain add vs replace; deploy-only when only ingress/CSP changes; coordinate with FE env (`NEXT_PUBLIC_*` / image hostnames)
+- **Next.js runtime hygiene** — readiness drain + heap watchdog + warm-up design (controlled recycle without cold CDN/nginx cache) documented in `FE_DRAIN_AND_HEAP`
+- **Security & secrets** — unblock/triage TruffleHog & Sonar findings; IAM/ECR/deploy-key boundaries; no secrets in values
+- **Incident / rollback** — helm history, previous image tag, redeploy via pipeline; align with S10 release checklist & post-deploy smoke
+
+TD: [DevOps Actions S10](https://sgame.atlassian.net/wiki/spaces/S10/pages/2979135510/Technical+Documentation+-+DevOps+Actions+S10) · repo docs: `SETUP_NEW_BRAND`, `SWITCH_DOMAIN`, `FE_DRAIN_AND_HEAP`
 
 ### Internal tools — SGames Portal
 
@@ -136,7 +168,7 @@ Guided by the S10 **[TD — Technical Document](https://sgame.atlassian.net/wiki
 
 - **Docs before code** — write / review Technical Proposal & TDD first; keep TS / API contracts and system overview as the shared source of truth
 - **Architecture ownership** — decide service boundaries (gateway, lobby, accumulation, risk, loyalty, portal ↔ sgames); prefer explicit fail modes and shared contracts over ad‑hoc coupling
-- **Delivery discipline** — Gitflow (feature → develop → release → main / hotfix); squash PRs with clear titles; release checklist (CI green, SemVer, QA, security scan, rollback plan, smoke on prod) via devops-actions-s10
+- **Delivery & ops fluency** — Gitflow + release checklist; consume/operate **devops-actions-s10** (Actions → ECR → Helmfile → EKS); security scans, domain/CDN cutovers, FE drain/warmup, rollback via helm history
 - **Multi-brand scale** — branch onboarding templates, FE mono / core module patterns, and Outsource Central product ownership so brands ship on the same platform rails
 - **Operate what we ship** — weekly tech sync, runbooks for critical flows, incident write‑ups that feed back into design; monitoring after go‑live before calling it done
 - **Raise the bar continuously** — competency expectations for the team; evolve delivery (e.g. trunk-based + release train + feature flags) when Gitflow cost outweighs benefit
